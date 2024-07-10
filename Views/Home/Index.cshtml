@@ -1,16 +1,13 @@
-﻿@model List<string>
-
-@{
-    ViewData["Title"] = "Lista de Reports";
+﻿@{
+    ViewData["Title"] = "Página Inicial";
 }
 
 <div class="container mt-4">
-    <h1 class="display-4 mb-4">Lista de Reports</h1>
+    <h1 class="display-4 mb-4">Relatórios das Aplicações</h1>
 
     <div class="list-group">
-        @foreach (var file in Model)
-        {
-            <a href="@Url.Action("Download", "Home", new { fileName = file })" class="list-group-item list-group-item-action">@file</a>
-        }
+        <a href="@Url.Action("OwaspReports", "Home")" class="list-group-item list-group-item-action">OwaspZap Reports</a>
+        <a href="@Url.Action("SnykReports", "Home")" class="list-group-item list-group-item-action">Snyk Reports</a>
+        <a href="@Url.Action("SonarReports", "Home")" class="list-group-item list-group-item-action">Sonar Reports</a>
     </div>
 </div>

@@ -1,0 +1,16 @@
+@model List<string>
+
+@{
+    ViewData["Title"] = "Lista de Relatórios Sonar";
+}
+
+<div class="container mt-4">
+    <h1 class="display-4 mb-4">Lista de Relatórios Sonar</h1>
+
+    <div class="list-group">
+        @foreach (var file in Model)
+        {
+            <a href="@Url.Action("Download", "Home", new { fileName = file, containerName = "sonarreports" })" class="list-group-item list-group-item-action">@file</a>
+        }
+    </div>
+</div>
