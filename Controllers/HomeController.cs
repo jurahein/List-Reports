@@ -38,28 +38,31 @@ namespace AzureStorageListFiles.Controllers
             return View(blobs);
         }
 
-        public async Task<IActionResult> Download(string fileName, string containerName)
-        {
-            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-            var blobClient = containerClient.GetBlobClient(fileName);
-            var memoryStream = new MemoryStream();
-            await blobClient.DownloadToAsync(memoryStream);
-            memoryStream.Position = 0;
-            return File(memoryStream, "application/octet-stream", fileName);
-        }
-
         public async Task<IActionResult> ViewReport(string fileName, string containerName)
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
             var blobClient = containerClient.GetBlobClient(fileName);
             var blobDownloadInfo = await blobClient.DownloadAsync();
 
-            // Ler o conteúdo do arquivo HTML em uma string
-            using (var streamReader = new StreamReader(blobDownloadInfo.Value.Content))
+            var contentType = blobDownloadInfo.Value.ContentType ?? GetContentType(fileName);
+
+            if (contentType.StartsWith("text/") || contentType.StartsWith("image/"))
             {
-                var fileContent = await streamReader.ReadToEndAsync();
-                return View("ViewReport", fileContent);
+                using (var streamReader = new StreamReader(blobDownloadInfo.Value.Content))
+                {
+                    var fileContent = await streamReader.ReadToEndAsync();
+                    return Content(fileContent, contentType);
+                }
             }
+            else if (contentType == "application/pdf")
+            {
+                var memoryStream = new MemoryStream();
+                await blobDownloadInfo.Value.Content.CopyToAsync(memoryStream);
+                memoryStream.Position = 0;
+                return File(memoryStream, contentType, fileName);
+            }
+
+            return Content("Unsupported file type.");
         }
 
         private async Task<List<string>> ListBlobsAsync(string containerName)
@@ -71,6 +74,21 @@ namespace AzureStorageListFiles.Controllers
                 files.Add(blobItem.Name);
             }
             return files;
+        }
+
+        private string GetContentType(string fileName)
+        {
+            var extension = Path.GetExtension(fileName).ToLowerInvariant();
+            return extension switch
+            {
+                ".htm" or ".html" => "text/html",
+                ".txt" => "text/plain",
+                ".md" => "text/markdown",
+                ".jpg" or ".jpeg" => "image/jpeg",
+                ".png" => "image/png",
+                ".pdf" => "application/pdf",
+                _ => "application/octet-stream",
+            };
         }
     }
 }
