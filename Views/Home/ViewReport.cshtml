@@ -1,0 +1,13 @@
+@model string
+
+@{
+    ViewData["Title"] = "Conteúdo do Relatório";
+}
+
+<div class="container mt-4">
+    <h1 class="display-4 mb-4">Conteúdo do Relatório</h1>
+
+    <div>
+        @Html.Raw(Model)
+    </div>
+</div>

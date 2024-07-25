@@ -48,6 +48,20 @@ namespace AzureStorageListFiles.Controllers
             return File(memoryStream, "application/octet-stream", fileName);
         }
 
+        public async Task<IActionResult> ViewReport(string fileName, string containerName)
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+            var blobClient = containerClient.GetBlobClient(fileName);
+            var blobDownloadInfo = await blobClient.DownloadAsync();
+
+            // Ler o conteúdo do arquivo HTML em uma string
+            using (var streamReader = new StreamReader(blobDownloadInfo.Value.Content))
+            {
+                var fileContent = await streamReader.ReadToEndAsync();
+                return View("ViewReport", fileContent);
+            }
+        }
+
         private async Task<List<string>> ListBlobsAsync(string containerName)
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
