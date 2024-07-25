@@ -1,6 +1,6 @@
 # List Reports
 
-Este projeto é uma aplicação ASP.NET Core chamada "List Reports", que lista e permite a visualização de arquivos armazenados no Azure Blob Storage. A aplicação é configurada para ser executada em um Azure Web App e suporta vários tipos de arquivos, incluindo `.html`, `.md`, `.jpeg`, `.txt`, `.png`, e `.pdf`.
+Este projeto é uma aplicação ASP.NET Core chamada "List Reports", que lista e permite a visualização de arquivos armazenados no Azure Blob Storage. A aplicação é configurada para ser executada em um Azure Web App e suporta arquivos `.html`
 
 ## Funcionalidades
 
