@@ -12,9 +12,14 @@ Este projeto é uma aplicação ASP.NET Core chamada "List Reports", que lista e
 
 - [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
 - [Azure Storage Blob SDK](https://www.nuget.org/packages/Azure.Storage.Blobs/)
-- Conta no Azure com permissões para criar recursos (Resource Group, Storage Account, Azure Web App, AKS)
+
 
 ## Configuração
 
 - Contém o diretório /IaC com o arquivo main.tf (Execução TERRAFORM) Para criar os recursos no Azure (Resource Group, Storage Account, ServicePlan, Azure Web App)
 
+## Aplicação
+
+Aqui está a tela da aplicação em execução:
+
+![Screenshot](img/screenshot.png)
